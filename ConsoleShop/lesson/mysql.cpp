@@ -49,6 +49,20 @@ bool insert_item_db(Item item)
     pstmt->setInt(2, item.balance);
     return not pstmt->execute();
 }
+
+vector<int>get_orders_by_client(int client_id)
+{
+    pstmt = con->prepareStatement("Select * from orders where client_id=?");
+	pstmt->setInt(1, client_id);
+	result=pstmt->executeQuery();
+	vector<int> orders_id;
+    while (result->next())
+    {
+        orders_id.push_back(result->getInt(1));
+    }
+    return orders_id;
+}
+
 bool delete_item_db(int id)
 {
     pstmt = con->prepareStatement("Delete from items where id=?");
@@ -59,19 +73,18 @@ bool insert_order_db(Order order)
 {
     pstmt = con->prepareStatement("INSERT INTO orders(client_id) values(?)");
     pstmt->setInt(1,order.client_id);
-    auto b=pstmt->executeQuery();
-   
-    cout << b->getInt("id")<< endl;;
-    return b;
-    //возможно возвратить id, нужно протестить
-   /* int order_id=result->getInt(1);
+    pstmt->execute();
+    bool check = false;
+    int order_id = *get_orders_by_client(order.client_id).rbegin();
+    
     for (auto item:order.items)
     {
         pstmt = con->prepareStatement("INSERT INTO orders_and_Items(order_id,item_id) values(?,?)");
         pstmt->setInt(1, order_id);
         pstmt->setInt(2, item.id);
         pstmt->execute();
-    }*/
+    }
+    return not check;
 }
 Item get_item_db(int item_id)
 {

@@ -23,8 +23,7 @@ void pay() {
 		cout << "Choice is selected.Add something else to your order or press zero!" << endl;
 	}
 
-	auto r = insert_order_db(order);
-	if (r)
+	if (insert_order_db(order))
 	{
 		if (update_item_db(order.items))
 			cout << "Our order is completed. Thank u for trusting us" << endl;

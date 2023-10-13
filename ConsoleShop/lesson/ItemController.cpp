@@ -46,9 +46,16 @@ void remove_item()
 	int id_rem;
 	cout << "Enter id of item to remove:";
 	cin >> id_rem;
-	if (delete_item_db(items[id_rem - 1].id))
+
+	if (id_rem>0 and id_rem<size(items))
 	{
-		cout << "Item removed" << endl;
+		if (delete_item_db(items[id_rem - 1].id))
+		{
+			cout << "Item removed" << endl;
+		}
 	}
-	else cout << "Item not removed" << endl;
+	else
+	{
+		cout << "Item not removed" << endl;
+	}
 }
